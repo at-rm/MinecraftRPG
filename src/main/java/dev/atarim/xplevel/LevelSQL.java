@@ -27,7 +27,6 @@ public class LevelSQL implements Listener {
     @EventHandler
     public void onJoin (PlayerJoinEvent playerJoinEvent) {
         Player player = playerJoinEvent.getPlayer();
-       // plugin.getServer().broadcastMessage("onjoin is called");
         createPlayer(player.getUniqueId());
     }
 
@@ -42,14 +41,12 @@ public class LevelSQL implements Listener {
      */
     private void createPlayer(UUID uuid) {
         try {
-            plugin.getServer().broadcastMessage("createPlayer is called");
             PreparedStatement statement = plugin.getConnection()
                     .prepareStatement("SELECT * FROM " + plugin.table + " WHERE UUID=?");
             statement.setString(1, uuid.toString());
             ResultSet results = statement.executeQuery();
             results.next();
             if (!playerExists(uuid)) {
-                plugin.getServer().broadcastMessage("createPlayer for non existing player");
                 PreparedStatement insert = plugin.getConnection()
                         .prepareStatement("INSERT INTO " + plugin.table
                                 + " (uuid, level, xp, skillPoints, healthLevel, strengthLevel, speedLevel, enduranceLevel, intelligenceLevel) " +
@@ -64,8 +61,6 @@ public class LevelSQL implements Listener {
                 insert.setInt(8, 0);
                 insert.setInt(9, 0);
                 insert.executeUpdate();
-
-                plugin.getServer().broadcastMessage(ChatColor.GREEN + "Player Inserted");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,10 +81,8 @@ public class LevelSQL implements Listener {
 
             ResultSet results = statement.executeQuery();
             if (results.next()) {
-                plugin.getServer().broadcastMessage(ChatColor.YELLOW + "Player Found");
                 return true;
             }
-            plugin.getServer().broadcastMessage(ChatColor.RED + "Player NOT Found");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -103,32 +96,31 @@ public class LevelSQL implements Listener {
      * @param player    the player that gained xp
      */
     public void gainXP (int gainedXp, Player player) {
-        // TODO add xp to xp-column and maybe increase level, calls isNextLevel and levelUp
-        // TODO get current xp, get current level, get intelligence, get player's uuid as string
+        // add xp to xp-column and maybe increase level, calls isNextLevel and levelUp
+        // get current xp, get current level, get intelligence, get player's uuid as string
             String playerUuid = player.getUniqueId().toString();
             int xp = getValueSQL("xp", playerUuid);
             int level = getValueSQL("level", playerUuid);
             int intelligenceLevel = getValueSQL("intelligenceLevel", playerUuid);
         // skill points in case the player levels up
             int skillPoints = getValueSQL("skillPoints", playerUuid);
-        // TODO newXp = formerXP + gainedXp*(intelligence + 1)
+        // newXp = formerXP + gainedXp*(intelligence + 1)
         int newXp = xp + gainedXp * (intelligenceLevel + 1);
-        // TODO if xp < level requirement, just update xp
+        // if xp < level requirement, just update xp
         int levelReq = levelRequirement(level);
         if (newXp < levelReq) {
             updateValueSQL("xp", newXp, playerUuid);
-            player.sendMessage("works");
         } else {
-            // TODO if xp >= level requirement, update level, adjust xp then update xp
+            // if xp >= level requirement, update level, adjust xp then update xp
             level++;
             updateValueSQL("level", level, playerUuid);
             skillPoints++;
             updateValueSQL("skillPoints", skillPoints, playerUuid);
             newXp -= levelReq;
             updateValueSQL("xp", newXp, playerUuid);
+            // TODO make it in face
             player.sendMessage(ChatColor.GOLD + "You achieved Level " + level);
         }
-        // TODO UPDATE players SET xp = newXp WHERE uuid = player's uuid
     }
 
     /**
@@ -189,8 +181,10 @@ public class LevelSQL implements Listener {
             player.sendMessage(ChatColor.DARK_PURPLE + "You don't have any skill points available.");
             return;
         }
+        // Player has more than 0 skill points. He can level up.
         switch (skill) {
             case "health":
+                // Leveling up health increases the
                 int healthLevel = getValueSQL("healthLevel", playersName);
                 updateValueSQL("healthLevel", healthLevel + 1, playersName);
                 player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20 + healthLevel);
