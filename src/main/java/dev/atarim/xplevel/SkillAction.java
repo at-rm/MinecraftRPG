@@ -1,4 +1,4 @@
 package dev.atarim.xplevel;
 
-public class LevelingMenu {
+public class SkillAction {
 }

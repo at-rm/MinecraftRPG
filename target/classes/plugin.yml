@@ -2,3 +2,4 @@ name: XPLevel
 version: 1.0-SNAPSHOT
 main: dev.atarim.xplevel.XPLevel
 api-version: 1.13
+depend: [TitleAPI]

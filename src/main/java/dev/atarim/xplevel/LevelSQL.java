@@ -2,11 +2,13 @@ package dev.atarim.xplevel;
 
 import com.connorlinfoot.titleapi.TitleAPI;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.sql.PreparedStatement;
@@ -34,6 +36,11 @@ public class LevelSQL implements Listener {
     @EventHandler
     public void onBreak (BlockBreakEvent blockBreakEvent) {
         gainXP(2, blockBreakEvent.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlace (BlockPlaceEvent blockPlaceEvent) {
+        gainXP (2, blockPlaceEvent.getPlayer());
     }
 
     /**
@@ -75,7 +82,6 @@ public class LevelSQL implements Listener {
      */
     private boolean playerExists(UUID uuid) {
         try {
-            plugin.getServer().broadcastMessage("playerExists is called");
             PreparedStatement statement = plugin.getConnection()
                     .prepareStatement("SELECT * FROM " + plugin.table + " WHERE UUID=?");
             statement.setString(1, uuid.toString());
@@ -120,11 +126,11 @@ public class LevelSQL implements Listener {
             newXp -= levelReq;
             updateValueSQL("xp", newXp, playerUuid);
             // TODO make it in face
-            TitleAPI.sendTitle(player,20, 100,20,
+            TitleAPI.sendTitle(player,20, 40,20,
                     ChatColor.YELLOW + "Level " + ChatColor.RED + "(" + level + ")",
                     ChatColor.GREEN + "1 " + ChatColor.GRAY + "New Skill Point (s) available. "
                             + ChatColor.WHITE + "/skills" );
-            player.sendMessage(ChatColor.GOLD + "You achieved Level " + level);
+            player.playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5f, 1);
         }
     }
 

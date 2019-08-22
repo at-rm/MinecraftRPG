@@ -70,5 +70,12 @@
             <version>1.14.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>dev.atarim.titleapi</groupId>
+            <artifactId>titleapi</artifactId>
+            <scope>system</scope>
+            <version>1.7.7</version>
+            <systemPath>C:/Users/Elias/code/APIs/TitleAPI-1.7.7.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
