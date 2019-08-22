@@ -1,5 +1,6 @@
 package dev.atarim.xplevel;
 
+import com.connorlinfoot.titleapi.TitleAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -119,6 +120,10 @@ public class LevelSQL implements Listener {
             newXp -= levelReq;
             updateValueSQL("xp", newXp, playerUuid);
             // TODO make it in face
+            TitleAPI.sendTitle(player,20, 100,20,
+                    ChatColor.YELLOW + "Level " + ChatColor.RED + "(" + level + ")",
+                    ChatColor.GREEN + "1 " + ChatColor.GRAY + "New Skill Point (s) available. "
+                            + ChatColor.WHITE + "/skills" );
             player.sendMessage(ChatColor.GOLD + "You achieved Level " + level);
         }
     }
@@ -154,7 +159,6 @@ public class LevelSQL implements Listener {
         String command = "UPDATE players SET " + value + " = ? WHERE uuid = ?";
         try {
             PreparedStatement update = plugin.getConnection().prepareStatement(command);
-            // update.setString(1, value);
             update.setInt(1, newValue);
             update.setString(2, playerUuid);
             update.executeUpdate();

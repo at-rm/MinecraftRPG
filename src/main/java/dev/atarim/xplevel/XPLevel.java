@@ -10,8 +10,6 @@ import java.sql.SQLException;
 
 public final class XPLevel extends JavaPlugin {
 
-    // private HashMap<UUID, LevelLogic> levelLogicHashMap;
-
     private Connection connection;
     public String host, database, username, password, table;
     public int port;
@@ -20,8 +18,6 @@ public final class XPLevel extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         mysqlSetup();
-
-        // this.levelLogicHashMap = new HashMap<>();
         this.getServer().getPluginManager().registerEvents(new LevelSQL(), this);
     }
 
@@ -29,20 +25,6 @@ public final class XPLevel extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
     }
-/*
-    @EventHandler
-    public void join (PlayerJoinEvent playerJoinEvent) {
-        Player player = playerJoinEvent.getPlayer();
-
-       if (!levelLogicHashMap.containsKey(player.getUniqueId())) {
-            levelLogicHashMap.put(player.getUniqueId(), new LevelLogic(player));
-        }
-       levelLogicHashMap.put(player.getUniqueId(), levelLogicHashMap.get(player.getUniqueId()));
-       player.sendMessage(ChatColor.GOLD + "Hey " + ChatColor.AQUA + player.getName() +
-                ChatColor.GOLD +"! Your current level is " + ChatColor.RED +
-                + levelLogicHashMap.get(player.getUniqueId()).getLevel() + ChatColor.GOLD + ".");
-    }
-*/
 
     public void mysqlSetup(){
         host = "localhost";
