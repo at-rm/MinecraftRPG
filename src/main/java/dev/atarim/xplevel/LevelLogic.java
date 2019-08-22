@@ -5,6 +5,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+/**
+ * deprecated
+ */
 public class LevelLogic {
 
     private int level;
@@ -51,7 +54,7 @@ public class LevelLogic {
         setXp(overflowXP - levelRequirement(formerLevel));
         skillPoints ++;
         player.sendMessage(ChatColor.LIGHT_PURPLE + "You are now Level " + level);
-        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+        player.playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 1, 1);
     }
 
     /**
