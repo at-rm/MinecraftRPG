@@ -9,7 +9,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,6 +50,13 @@ public class LevelSQL implements Listener {
     @EventHandler
     public void onPlace (BlockPlaceEvent blockPlaceEvent) {
         gainXP (2, blockPlaceEvent.getPlayer());
+    }
+
+    @EventHandler
+    public void onRespawn (PlayerRespawnEvent playerRespawnEvent) {
+        Player player = playerRespawnEvent.getPlayer();
+        int playerHealth = 20 + getValueSQL("healthLevel", player.getUniqueId().toString());
+        player.setHealth(playerHealth);
     }
 
     /**
@@ -132,8 +143,8 @@ public class LevelSQL implements Listener {
             updateValueSQL("xp", newXp, playerUuid);
             // TODO make it in face
             TitleAPI.sendTitle(player,20, 40,20,
-                    ChatColor.YELLOW + "Level " + ChatColor.RED + "(" + level + ")",
-                    ChatColor.GREEN + "1 " + ChatColor.GRAY + "New Skill Point (s) available. "
+                    ChatColor.YELLOW + "Level Up! " + ChatColor.RED + ChatColor.BOLD + level,
+                    ChatColor.GREEN + "1 " + ChatColor.GRAY + "New Skill Point Available. "
                             + ChatColor.WHITE + "/skills" );
             player.playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5f, 1);
         }
@@ -193,7 +204,7 @@ public class LevelSQL implements Listener {
         String playersName = player.getUniqueId().toString();
         int availableSkillPoints = getValueSQL("skillPoints", playersName);
         if (availableSkillPoints == 0) {
-            player.sendMessage(ChatColor.DARK_PURPLE + "You don't have any skill points available.");
+            player.sendMessage(ChatColor.RED + "You don't have any skill points available.");
             return;
         }
         // Player has more than 0 skill points. He can level up.
@@ -202,25 +213,31 @@ public class LevelSQL implements Listener {
                 // Leveling up health increases the
                 int healthLevel = getValueSQL("healthLevel", playersName);
                 updateValueSQL("healthLevel", healthLevel + 1, playersName);
-                player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20 + healthLevel);
+                player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20 + 1 + healthLevel);
+                player.sendMessage(ChatColor.DARK_AQUA + "Your health has increased!");
                 break;
             case "strength":
                 int strengthLevel = getValueSQL("strengthLevel", playersName);
                 updateValueSQL("strengthLevel", strengthLevel + 1, playersName);
-                player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1 + strengthLevel * 0.5);
+                player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1 + (strengthLevel + 1) * 0.5);
+                player.sendMessage(ChatColor.DARK_AQUA + "Your strength has increased!");
                 break;
             case "speed":
                 int speedLevel = getValueSQL("speedLevel", playersName);
-                updateValueSQL("strengthLevel", speedLevel + 1, playersName);
-                player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1 + speedLevel * 0.02);
-                player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(4 + speedLevel * 0.5);
+                updateValueSQL("speedLevel", speedLevel + 1, playersName);
+                player.sendMessage(ChatColor.DARK_AQUA + "Your speed has increased!");
+                player.setWalkSpeed(0.1f + (speedLevel + 1) * 0.01f);
                 break;
             case "endurance":
+                int enduranceLevel = getValueSQL("enduranceLevel", playersName);
+                updateValueSQL("enduranceLevel", enduranceLevel + 1, playersName);
+                player.sendMessage(ChatColor.DARK_AQUA + "Your endurance has increased!");
                 //TODO what should endurance do? :c
                 break;
             case "intelligence":
                 int intelligenceLevel = getValueSQL("intelligenceLevel", playersName);
                 updateValueSQL("intelligenceLevel", intelligenceLevel + 1, playersName);
+                player.sendMessage(ChatColor.DARK_AQUA + "Your intelligence has increased!");
                 break;
             default:
                 plugin.getServer().broadcastMessage("Uh-oh something went wrong.");

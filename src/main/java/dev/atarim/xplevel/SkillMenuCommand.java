@@ -3,22 +3,25 @@ package dev.atarim.xplevel;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 
 public class SkillMenuCommand implements CommandExecutor {
 
     private static int[] bases = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-    private static HashMap<Integer, String> map = new HashMap<Integer, String>();
+    private static HashMap<Integer, String> map = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -26,7 +29,9 @@ public class SkillMenuCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             String playerName = player.getUniqueId().toString();
-            Inventory skillMenu = Bukkit.createInventory(player, 27, ChatColor.DARK_GREEN + "Skills");
+            Inventory skillMenu = Bukkit.createInventory(player, 27, ChatColor.DARK_GREEN + "Skills | "
+            + ChatColor.DARK_BLUE + new LevelSQL().getValueSQL("skillPoints", playerName)
+                    + ChatColor.BLACK + " Points Remaining" );
 
             // new ItemMeta for every skill
             ItemStack health = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE);
@@ -36,6 +41,7 @@ public class SkillMenuCommand implements CommandExecutor {
             ItemStack intelligence = new ItemStack(Material.ENCHANTED_BOOK);
 
             ItemStack filler = new ItemStack(Material.AIR);
+            ItemStack exit = new ItemStack(Material.APPLE);
 
             // new Meta for every skill
             ItemMeta healthMeta = health.getItemMeta();
@@ -43,25 +49,30 @@ public class SkillMenuCommand implements CommandExecutor {
             ItemMeta speedMeta = speed.getItemMeta();
             ItemMeta enduranceMeta = endurance.getItemMeta();
             ItemMeta intelligenceMeta = intelligence.getItemMeta();
+            ItemMeta exitMeta = exit.getItemMeta();
 
             // health skill appearance
             healthMeta.setDisplayName(ChatColor.GOLD + "Health " + romanSkillLevel("healthLevel", playerName));
             ArrayList<String> healthLore = new ArrayList<>();
-            healthLore.add(ChatColor.DARK_BLUE + "Increases your maximum health.");
+            healthLore.add(ChatColor.BLUE + "Increases your maximum health.");
             healthMeta.setLore(healthLore);
             health.setItemMeta(healthMeta);
 
             // strength skill appearance
+            strengthMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
             strengthMeta.setDisplayName(ChatColor.GOLD + "Strength " + romanSkillLevel("strengthLevel", playerName));
             ArrayList<String> strengthLore = new ArrayList<>();
-            strengthLore.add(ChatColor.DARK_BLUE + "Increases your base attack damage.");
+            strengthLore.add(ChatColor.BLUE + "Increases your base attack damage.");
             strengthMeta.setLore(strengthLore);
             strength.setItemMeta(strengthMeta);
 
             // speed skill appearance
+            speedMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
             speedMeta.setDisplayName(ChatColor.GOLD + "Speed " + romanSkillLevel("speedLevel", playerName));
             ArrayList<String> speedLore = new ArrayList<>();
-            speedLore.add(ChatColor.DARK_BLUE + "Increases your movement and attack speed.");
+            speedLore.add(ChatColor.BLUE + "Increases your movement and attack speed.");
             speedMeta.setLore(speedLore);
             speed.setItemMeta(speedMeta);
 
@@ -69,16 +80,23 @@ public class SkillMenuCommand implements CommandExecutor {
             enduranceMeta.setDisplayName(ChatColor.GOLD + "Endurance " + romanSkillLevel("enduranceLevel", playerName));
             ArrayList<String> enduranceLore = new ArrayList<>();
             // TODO what does endurance do? :c
-            enduranceLore.add(ChatColor.DARK_BLUE + "Increases your endurance.");
+            enduranceLore.add(ChatColor.BLUE + "Increases your endurance.");
             enduranceMeta.setLore(enduranceLore);
             endurance.setItemMeta(enduranceMeta);
 
             // intelligence skill appearance
             intelligenceMeta.setDisplayName(ChatColor.GOLD + "Intelligence " + romanSkillLevel("intelligenceLevel", playerName));
             ArrayList<String> intelligenceLore = new ArrayList<>();
-            intelligenceLore.add(ChatColor.DARK_BLUE + "Increases your XP gain.");
+            intelligenceLore.add(ChatColor.BLUE + "Increases your XP gain.");
             intelligenceMeta.setLore(intelligenceLore);
             intelligence.setItemMeta(intelligenceMeta);
+
+            // exit
+            exitMeta.setDisplayName(ChatColor.RED + "EXIT");
+            ArrayList<String> exitLore = new ArrayList<>();
+            exitLore.add(ChatColor.BLUE + "Leave Menu");
+            exitMeta.setLore(exitLore);
+            exit.setItemMeta(exitMeta);
 
             // Construct GUI
             ItemStack[] menu = new ItemStack[27];
@@ -104,6 +122,7 @@ public class SkillMenuCommand implements CommandExecutor {
                          break;
                  }
             }
+
             skillMenu.setContents(menu);
             player.openInventory(skillMenu);
         }

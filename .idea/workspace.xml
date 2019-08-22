@@ -7,27 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12243253-df6f-469e-a189-3a86463db641" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/target/classes/META-INF/XPLevel.kotlin_module" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/SkillAction$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/SkillAction.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/SkillMenuCommand.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/XPLevel.iml" beforeDir="false" afterPath="$PROJECT_DIR$/XPLevel.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelingMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillMenuCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillMenuCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillMenuCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/XPLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/XPLevel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/LevelLogic.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/LevelSQL.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/LevelSQL.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/MySQLCon.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/XPGains$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/XPGains.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/LevelingMenu.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/XPLevel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/XPLevel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/skills/EnduranceSkill.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/skills/HealthSkill.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/skills/IntelligenceSkill.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/skills/Skill.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/skills/SkillGuiMenu.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/skills/SpeedSkill.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/skills/StrengthSkill.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -46,20 +36,24 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/XPLevel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="21" column="63" selection-start-line="21" selection-start-column="63" selection-end-line="21" selection-end-column="63" />
+            <state relative-caret-position="380">
+              <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1737#1738#0" expanded="true" />
+                <element signature="e#1770#1771#0" expanded="true" />
+                <element signature="e#1826#1827#0" expanded="true" />
+                <element signature="e#1870#1871#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
-              <caret line="147" column="51" lean-forward="true" selection-start-line="147" selection-start-column="51" selection-end-line="147" selection-end-column="51" />
+            <state relative-caret-position="432">
+              <caret line="18" column="44" selection-start-line="18" selection-start-column="44" selection-end-line="18" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -70,11 +64,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillMenuCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="596">
-              <caret line="107" column="44" selection-start-line="107" selection-start-column="44" selection-end-line="107" selection-end-column="44" />
+            <state relative-caret-position="-300">
+              <caret line="118" column="31" selection-start-line="118" selection-start-column="31" selection-end-line="118" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#634#651#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="76" column="42" selection-start-line="76" selection-start-column="42" selection-end-line="76" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -108,9 +113,10 @@
         <option value="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/skills/SkillGuiMenu.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillMenu.java" />
-        <option value="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java" />
-        <option value="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillMenuCommand.java" />
         <option value="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+        <option value="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillAction.java" />
+        <option value="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillMenuCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java" />
         <option value="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/XPLevel.java" />
       </list>
     </option>
@@ -124,7 +130,7 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="463" />
     <option name="y" value="37" />
     <option name="width" value="1400" />
@@ -249,7 +255,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26599148" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26599148" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -297,16 +303,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="147" column="51" lean-forward="true" selection-start-line="147" selection-start-column="51" selection-end-line="147" selection-end-column="51" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
@@ -314,23 +310,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillMenuCommand.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="596">
-          <caret line="107" column="44" selection-start-line="107" selection-start-column="44" selection-end-line="107" selection-end-column="44" />
+        <state relative-caret-position="432">
+          <caret line="18" column="44" selection-start-line="18" selection-start-column="44" selection-end-line="18" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#634#651#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/SkillMenuCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-300">
+          <caret line="118" column="31" selection-start-line="118" selection-start-column="31" selection-end-line="118" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="76" column="42" selection-start-line="76" selection-start-column="42" selection-end-line="76" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/XPLevel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="21" column="63" selection-start-line="21" selection-start-column="63" selection-end-line="21" selection-end-column="63" />
+        <state relative-caret-position="380">
+          <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1737#1738#0" expanded="true" />
+            <element signature="e#1770#1771#0" expanded="true" />
+            <element signature="e#1826#1827#0" expanded="true" />
+            <element signature="e#1870#1871#0" expanded="true" />
           </folding>
         </state>
       </provider>
