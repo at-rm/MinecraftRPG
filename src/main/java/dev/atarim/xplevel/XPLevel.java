@@ -19,6 +19,7 @@ public final class XPLevel extends JavaPlugin {
         // Plugin startup logic
         mysqlSetup();
         this.getServer().getPluginManager().registerEvents(new LevelSQL(), this);
+        getCommand("skills").setExecutor(new SkillMenuCommand());
     }
 
     @Override

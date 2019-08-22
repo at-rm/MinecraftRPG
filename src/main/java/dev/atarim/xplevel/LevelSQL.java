@@ -31,6 +31,11 @@ public class LevelSQL implements Listener {
     public void onJoin (PlayerJoinEvent playerJoinEvent) {
         Player player = playerJoinEvent.getPlayer();
         createPlayer(player.getUniqueId());
+        if (player.hasPlayedBefore()) {
+            player.sendMessage(ChatColor.GOLD + "Welcome Back to Lapyta Skyblock, " + player.getName() + "!");
+        } else {
+            player.sendMessage(ChatColor.GOLD + "Welcome to Lapyta Skyblock, " + player.getName() + "!");
+        }
     }
 
     @EventHandler
@@ -140,7 +145,7 @@ public class LevelSQL implements Listener {
      * @param playerUuid    the player's uuid as a String
      * @return  the value of the field
      */
-    private int getValueSQL (String value, String playerUuid) {
+    public int getValueSQL (String value, String playerUuid) {
         String command = "SELECT * FROM players WHERE uuid=?";
         try {
             PreparedStatement getValue = plugin.getConnection().prepareStatement(command);
