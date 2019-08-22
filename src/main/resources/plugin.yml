@@ -1,0 +1,4 @@
+name: XPLevel
+version: ${project.version}
+main: dev.atarim.xplevel.XPLevel
+api-version: 1.13
