@@ -117,6 +117,9 @@ public class SkillMenuCommand implements CommandExecutor {
                      case 15:
                          menu [i] = intelligence;
                          break;
+                     case 26:
+                         menu [i] = exit;
+                         break;
                      default:
                          menu [i] = filler;
                          break;

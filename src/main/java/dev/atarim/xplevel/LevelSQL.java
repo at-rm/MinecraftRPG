@@ -9,11 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerVelocityEvent;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,6 +37,12 @@ public class LevelSQL implements Listener {
         } else {
             player.sendMessage(ChatColor.GOLD + "Welcome to Lapyta Skyblock, " + player.getName() + "!");
         }
+        int speedLevel = getValueSQL("speedLevel", player.getUniqueId().toString());
+        player.setWalkSpeed(0.15F + speedLevel * 0.01F);
+        int healthLevel = getValueSQL("healthLevel", player.getUniqueId().toString());
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20 + healthLevel);
+        int strengthLevel = getValueSQL("strengthLevel", player.getUniqueId().toString());
+        player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1 + strengthLevel * 0.5);
     }
 
     @EventHandler
@@ -131,22 +134,25 @@ public class LevelSQL implements Listener {
         int newXp = xp + gainedXp * (intelligenceLevel + 1);
         // if xp < level requirement, just update xp
         int levelReq = levelRequirement(level);
-        if (newXp < levelReq) {
+        if (newXp < levelReq || level >= 100) {
             updateValueSQL("xp", newXp, playerUuid);
         } else {
+            int levelUpCounter = 0;
             // if xp >= level requirement, update level, adjust xp then update xp
-            level++;
+            while (newXp >= levelRequirement(level)) {
+                levelUpCounter ++;
+                level++;
+                skillPoints++;
+                newXp -= levelReq;
+            }
             updateValueSQL("level", level, playerUuid);
-            skillPoints++;
             updateValueSQL("skillPoints", skillPoints, playerUuid);
-            newXp -= levelReq;
             updateValueSQL("xp", newXp, playerUuid);
-            // TODO make it in face
+            player.playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5f, 1);
             TitleAPI.sendTitle(player,20, 40,20,
                     ChatColor.YELLOW + "Level Up! " + ChatColor.RED + ChatColor.BOLD + level,
-                    ChatColor.GREEN + "1 " + ChatColor.GRAY + "New Skill Point Available. "
+                    ChatColor.GREEN + Integer.toString(levelUpCounter) + " " + ChatColor.GRAY + "New Skill Point Available. "
                             + ChatColor.WHITE + "/skills" );
-            player.playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5f, 1);
         }
     }
 
@@ -226,7 +232,7 @@ public class LevelSQL implements Listener {
                 int speedLevel = getValueSQL("speedLevel", playersName);
                 updateValueSQL("speedLevel", speedLevel + 1, playersName);
                 player.sendMessage(ChatColor.DARK_AQUA + "Your speed has increased!");
-                player.setWalkSpeed(0.1f + (speedLevel + 1) * 0.01f);
+                player.setWalkSpeed(0.15f+ (speedLevel + 1) * 0.01f);
                 break;
             case "endurance":
                 int enduranceLevel = getValueSQL("enduranceLevel", playersName);

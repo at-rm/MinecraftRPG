@@ -30,19 +30,12 @@ public final class XPLevel extends JavaPlugin {
 
     public void mysqlSetup(){
 
-        host = "";
-        port = 0;
-        database = "id10584108_players";
-        username = "id10584108_root";
-
-        /*
         host = "localhost";
         port = 3306;
         database = "test";
         username = "root";
         password = "password";
         table = "players";
-         */
 
         try{
 
