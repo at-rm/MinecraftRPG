@@ -197,7 +197,7 @@ public class LevelSQL implements Listener {
 
     private int levelRequirement (int level) {
         //TODO level up logic
-        return 10;
+        return 100 * (level ^ 2);
     }
 
     /**
@@ -216,7 +216,6 @@ public class LevelSQL implements Listener {
         // Player has more than 0 skill points. He can level up.
         switch (skill) {
             case "health":
-                // Leveling up health increases the
                 int healthLevel = getValueSQL("healthLevel", playersName);
                 updateValueSQL("healthLevel", healthLevel + 1, playersName);
                 player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20 + 1 + healthLevel);
