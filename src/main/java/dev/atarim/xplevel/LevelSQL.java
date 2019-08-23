@@ -47,12 +47,12 @@ public class LevelSQL implements Listener {
 
     @EventHandler
     public void onBreak (BlockBreakEvent blockBreakEvent) {
-        gainXP(2, blockBreakEvent.getPlayer());
+        gainXP(10, blockBreakEvent.getPlayer());
     }
 
     @EventHandler
     public void onPlace (BlockPlaceEvent blockPlaceEvent) {
-        gainXP (2, blockPlaceEvent.getPlayer());
+        gainXP (10, blockPlaceEvent.getPlayer());
     }
 
     @EventHandler
@@ -134,16 +134,21 @@ public class LevelSQL implements Listener {
         int newXp = xp + gainedXp * (intelligenceLevel + 1);
         // if xp < level requirement, just update xp
         int levelReq = levelRequirement(level);
+        player.sendMessage("level requirement: " + levelReq);
         if (newXp < levelReq || level >= 100) {
             updateValueSQL("xp", newXp, playerUuid);
+            player.sendMessage("added xp: " + newXp);
         } else {
             int levelUpCounter = 0;
             // if xp >= level requirement, update level, adjust xp then update xp
             while (newXp >= levelRequirement(level)) {
+                player.sendMessage("level " + level);
                 levelUpCounter ++;
-                level++;
                 skillPoints++;
-                newXp -= levelReq;
+                newXp -= levelRequirement(level);
+
+                player.sendMessage(("new xp" + newXp));
+                level++;
             }
             updateValueSQL("level", level, playerUuid);
             updateValueSQL("skillPoints", skillPoints, playerUuid);
@@ -151,7 +156,7 @@ public class LevelSQL implements Listener {
             player.playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5f, 1);
             TitleAPI.sendTitle(player,20, 40,20,
                     ChatColor.YELLOW + "Level Up! " + ChatColor.RED + ChatColor.BOLD + level,
-                    ChatColor.GREEN + Integer.toString(levelUpCounter) + " " + ChatColor.GRAY + "New Skill Point Available. "
+                    ChatColor.GREEN + Integer.toString(levelUpCounter) + " " + ChatColor.GRAY + "New Skill Point(s) Available. "
                             + ChatColor.WHITE + "/skills" );
         }
     }
@@ -197,7 +202,7 @@ public class LevelSQL implements Listener {
 
     private int levelRequirement (int level) {
         //TODO level up logic
-        return 100 * (level ^ 2);
+        return 100 * (level * level);
     }
 
     /**

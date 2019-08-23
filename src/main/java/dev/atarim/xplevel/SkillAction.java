@@ -36,6 +36,9 @@ public class SkillAction implements Listener {
                     player.closeInventory();
                     new LevelSQL().skillUp("intelligence", player);
                     break;
+                case APPLE:
+                    player.closeInventory();
+                    break;
                 default:
                     player.sendMessage("Uh-oh something went wrong.");
                     break;
