@@ -17,7 +17,6 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +30,6 @@ public class LevelSQL implements Listener {
 
     private XPLevel plugin = XPLevel.getPlugin(XPLevel.class);
     private BossBar levelBar;
-    private int count = 0;
 
 
     /**
