@@ -1,16 +1,23 @@
 package dev.atarim.xplevel;
 
 import com.connorlinfoot.titleapi.TitleAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +30,9 @@ import java.util.UUID;
 public class LevelSQL implements Listener {
 
     private XPLevel plugin = XPLevel.getPlugin(XPLevel.class);
+    private BossBar levelBar;
+    private int count = 0;
+
 
     /**
      * When players join a new database entry is created if they're not in the database yet.
@@ -43,6 +53,9 @@ public class LevelSQL implements Listener {
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20 + healthLevel);
         int strengthLevel = getValueSQL("strengthLevel", player.getUniqueId().toString());
         player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1 + strengthLevel * 0.5);
+
+        // Level Bar says: Level 23 | 76050/84200 XP | (Bold) +30xp
+        levelBar = newLevelBar(player);
     }
 
     @EventHandler
@@ -60,6 +73,26 @@ public class LevelSQL implements Listener {
         Player player = playerRespawnEvent.getPlayer();
         int playerHealth = 20 + getValueSQL("healthLevel", player.getUniqueId().toString());
         player.setHealth(playerHealth);
+    }
+
+    // TODO implement Entity level
+    @EventHandler
+    public void onKill (EntityDamageByEntityEvent entityEvent) {
+        if (entityEvent.getEntity().isDead()) {
+            if (entityEvent.getDamager() instanceof Player) {
+                Player player = (Player) entityEvent.getDamager();
+                // TODO implement Mob level
+                gainXP (10, player);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEnchant (EnchantItemEvent enchantEvent) {
+        Player player = enchantEvent.getEnchanter();
+        int xpLevelCost = enchantEvent.getExpLevelCost();
+        // TODO set Enchantment xp
+        gainXP(xpLevelCost, player);
     }
 
     /**
@@ -134,20 +167,15 @@ public class LevelSQL implements Listener {
         int newXp = xp + gainedXp * (intelligenceLevel + 1);
         // if xp < level requirement, just update xp
         int levelReq = levelRequirement(level);
-        player.sendMessage("level requirement: " + levelReq);
         if (newXp < levelReq || level >= 100) {
             updateValueSQL("xp", newXp, playerUuid);
-            player.sendMessage("added xp: " + newXp);
         } else {
             int levelUpCounter = 0;
             // if xp >= level requirement, update level, adjust xp then update xp
             while (newXp >= levelRequirement(level)) {
-                player.sendMessage("level " + level);
                 levelUpCounter ++;
                 skillPoints++;
                 newXp -= levelRequirement(level);
-
-                player.sendMessage(("new xp" + newXp));
                 level++;
             }
             updateValueSQL("level", level, playerUuid);
@@ -159,6 +187,9 @@ public class LevelSQL implements Listener {
                     ChatColor.GREEN + Integer.toString(levelUpCounter) + " " + ChatColor.GRAY + "New Skill Point(s) Available. "
                             + ChatColor.WHITE + "/skills" );
         }
+
+        newLevelBar(player);
+        // updateLevelBar(gainedXp * (intelligenceLevel + 1 ), player);
     }
 
     /**
@@ -188,7 +219,7 @@ public class LevelSQL implements Listener {
      * @param playerUuid    the player who this applies to
      */
     private void updateValueSQL (String value, int newValue, String playerUuid) {
-        // TODO UPDATE players SET xp = newXp WHERE uuid = player's uuid
+        // UPDATE players SET xp = newXp WHERE uuid = player's uuid
         String command = "UPDATE players SET " + value + " = ? WHERE uuid = ?";
         try {
             PreparedStatement update = plugin.getConnection().prepareStatement(command);
@@ -201,7 +232,7 @@ public class LevelSQL implements Listener {
     }
 
     private int levelRequirement (int level) {
-        //TODO level up logic
+        //level up logic
         return 100 * (level * level);
     }
 
@@ -211,7 +242,7 @@ public class LevelSQL implements Listener {
      * @param player    the player that selected the skill
      */
     public void skillUp (String skill, Player player) {
-        //TODO check skill points > 0, increase specified skill
+        // check skill points > 0, increase specified skill
         String playersName = player.getUniqueId().toString();
         int availableSkillPoints = getValueSQL("skillPoints", playersName);
         if (availableSkillPoints == 0) {
@@ -242,7 +273,7 @@ public class LevelSQL implements Listener {
                 int enduranceLevel = getValueSQL("enduranceLevel", playersName);
                 updateValueSQL("enduranceLevel", enduranceLevel + 1, playersName);
                 player.sendMessage(ChatColor.DARK_AQUA + "Your endurance has increased!");
-                //TODO what should endurance do? :c
+                // TODO what should endurance do? :c
                 break;
             case "intelligence":
                 int intelligenceLevel = getValueSQL("intelligenceLevel", playersName);
@@ -255,6 +286,40 @@ public class LevelSQL implements Listener {
         }
         // used one skill point
         updateValueSQL("skillPoints", availableSkillPoints - 1, playersName);
+    }
+
+    private void updateLevelBar (int gainedXp, Player player) {
+        int level = getValueSQL("level", player.getUniqueId().toString());
+        int currentXp = getValueSQL("xp", player.getUniqueId().toString());
+        int xpToNextLevel = levelRequirement(level);
+        String titleForLevelBar = ChatColor.LIGHT_PURPLE + "Level " + ChatColor.WHITE + level +  " | "
+                + ChatColor.LIGHT_PURPLE + currentXp + "/" + xpToNextLevel + "EXP";
+
+        if (gainedXp > 0) {
+            titleForLevelBar = titleForLevelBar + ChatColor.WHITE + " | "
+                    + ChatColor.GREEN + ChatColor.ITALIC + "+" + gainedXp + "EXP";
+        }
+
+        levelBar.removeAll();
+        BossBar updatedLevelBar = Bukkit.createBossBar(titleForLevelBar, BarColor.PINK, BarStyle.SOLID);
+        double xpDouble = (double) currentXp;
+        updatedLevelBar.setProgress(xpDouble/xpToNextLevel);
+        updatedLevelBar.addPlayer(player);
+        levelBar = updatedLevelBar;
+    }
+
+    private BossBar newLevelBar (Player player) {
+        int level = getValueSQL("level", player.getUniqueId().toString());
+        int currentXp = getValueSQL("xp", player.getUniqueId().toString());
+        int xpToNextLevel = levelRequirement(level);
+        String titleForLevelBar = ChatColor.LIGHT_PURPLE + "Level " + ChatColor.WHITE + level +  " | "
+                + ChatColor.LIGHT_PURPLE + currentXp + "/" + xpToNextLevel + "EXP";
+        BossBar newBar = Bukkit.createBossBar(titleForLevelBar, BarColor.PINK, BarStyle.SOLID);
+
+        double xpDouble = (double) currentXp;
+        newBar.setProgress(xpDouble/xpToNextLevel);
+        newBar.addPlayer(player);
+        return newBar;
     }
 
 }

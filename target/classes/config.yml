@@ -1,0 +1,6 @@
+host: '51.68.188.57'
+port: 3306
+database: 'admin_minecraft'
+username: 'admin_steve'
+password: 'fXMSKBtQZN'
+table: 'players'

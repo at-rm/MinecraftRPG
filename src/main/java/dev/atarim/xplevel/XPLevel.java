@@ -17,10 +17,27 @@ public final class XPLevel extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        loadConfig();
+
         mysqlSetup();
         this.getServer().getPluginManager().registerEvents(new LevelSQL(), this);
         getCommand("skills").setExecutor(new SkillMenuCommand());
         getServer().getPluginManager().registerEvents(new SkillAction(), this);
+    }
+
+    /**
+     * Load configuration for database from config.yml file.
+     */
+    private void loadConfig() {
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+
+        host = this.getConfig().getString("host");
+        port = this.getConfig().getInt("port");
+        database = this.getConfig().getString("database");
+        username = this.getConfig().getString("username");
+        password = this.getConfig().getString("password");
+        table = this.getConfig().getString("table");
     }
 
     @Override
@@ -29,13 +46,14 @@ public final class XPLevel extends JavaPlugin {
     }
 
     public void mysqlSetup(){
-
+        /*
         host = "localhost";
         port = 3306;
         database = "test";
         username = "root";
         password = "password";
         table = "players";
+         */
 
         try{
 
