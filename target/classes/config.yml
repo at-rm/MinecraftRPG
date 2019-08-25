@@ -1,6 +1,6 @@
-host: '51.68.188.57'
+host: 'localhost'
 port: 3306
-database: 'admin_minecraft'
-username: 'admin_steve'
-password: 'fXMSKBtQZN'
+database: 'test'
+username: 'root'
+password: 'password'
 table: 'players'

@@ -7,14 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12243253-df6f-469e-a189-3a86463db641" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_14_4_R0_1_SNAPSHOT.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_14_4_R0_1_SNAPSHOT.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/XPLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/XPLevel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/LevelSQL.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/LevelSQL.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/XPLevel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/atarim/xplevel/XPLevel.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -68,10 +62,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="31" column="29" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
+            <state relative-caret-position="348">
+              <caret line="68" column="38" selection-start-line="68" selection-start-column="38" selection-end-line="68" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2740#2741#0" expanded="true" />
+                <element signature="e#2781#2782#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -250,7 +246,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2867804" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2867804" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -346,10 +342,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/dev/atarim/xplevel/LevelSQL.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="31" column="29" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
+        <state relative-caret-position="348">
+          <caret line="68" column="38" selection-start-line="68" selection-start-column="38" selection-end-line="68" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2740#2741#0" expanded="true" />
+            <element signature="e#2781#2782#0" expanded="true" />
           </folding>
         </state>
       </provider>

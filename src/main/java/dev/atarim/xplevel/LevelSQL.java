@@ -10,11 +10,13 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -54,6 +56,18 @@ public class LevelSQL implements Listener {
 
         // Level Bar says: Level 23 | 76050/84200 XP | (Bold) +30xp
         levelBar = newLevelBar(player);
+
+        // Need Player's current level to get their nickname.
+        int level = getValueSQL("level", player.getUniqueId().toString());
+        // Set their nickname
+        String levelString = ChatColor.GRAY + "[" + ChatColor.YELLOW + "⌁" + getLevelColor(level) + level
+                + ChatColor.YELLOW + "⌁" + ChatColor.GRAY + "]";
+        player.setDisplayName(levelString + " " + player.getName());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onChat(final AsyncPlayerChatEvent e) {
+        e.setFormat("%1$s: %2$s");
     }
 
     @EventHandler
@@ -186,8 +200,8 @@ public class LevelSQL implements Listener {
                             + ChatColor.WHITE + "/skills" );
         }
 
-        newLevelBar(player);
-        // updateLevelBar(gainedXp * (intelligenceLevel + 1 ), player);
+        // newLevelBar(player);
+        updateLevelBar(gainedXp * (intelligenceLevel + 1 ), player);
     }
 
     /**
@@ -284,8 +298,17 @@ public class LevelSQL implements Listener {
         }
         // used one skill point
         updateValueSQL("skillPoints", availableSkillPoints - 1, playersName);
+
+        // give them full health
+        int playerHealth = 20 + getValueSQL("healthLevel", player.getUniqueId().toString());
+        player.setHealth(playerHealth);
     }
 
+    /**
+     * Level Bar that activates when a player gains XP, showing how much XP they earned.
+     * @param gainedXp  the xp they gained
+     * @param player    the player that earned it
+     */
     private void updateLevelBar (int gainedXp, Player player) {
         int level = getValueSQL("level", player.getUniqueId().toString());
         int currentXp = getValueSQL("xp", player.getUniqueId().toString());
@@ -306,6 +329,11 @@ public class LevelSQL implements Listener {
         levelBar = updatedLevelBar;
     }
 
+    /**
+     * Makes a Level Bar for a player without any XP gained.
+     * @param player    the player
+     * @return          the new Level Bar
+     */
     private BossBar newLevelBar (Player player) {
         int level = getValueSQL("level", player.getUniqueId().toString());
         int currentXp = getValueSQL("xp", player.getUniqueId().toString());
@@ -318,6 +346,36 @@ public class LevelSQL implements Listener {
         newBar.setProgress(xpDouble/xpToNextLevel);
         newBar.addPlayer(player);
         return newBar;
+    }
+
+    /**
+     * Get Level Color for Player's names.
+     * @param level the level the player is
+     * @return  the corresponding color
+     */
+    private ChatColor getLevelColor (int level) {
+        if (level < 10) {
+            return ChatColor.GRAY;
+        } else if (level < 20) {
+            return ChatColor.WHITE;
+        } else if (level < 30) {
+            return ChatColor.GREEN;
+        } else if (level < 40) {
+            return ChatColor.DARK_GREEN;
+        } else if (level < 50) {
+            return ChatColor.DARK_AQUA;
+        } else if (level < 60) {
+            return ChatColor.AQUA;
+        } else if (level < 70) {
+            return ChatColor.YELLOW;
+        } else if (level < 80) {
+            return ChatColor.GOLD;
+        } else if (level < 90) {
+            return ChatColor.LIGHT_PURPLE;
+        } else if (level < 100) {
+            return ChatColor.RED;
+        }
+        return ChatColor.DARK_PURPLE;
     }
 
 }
