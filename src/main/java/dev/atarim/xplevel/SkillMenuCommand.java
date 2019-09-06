@@ -3,7 +3,6 @@ package dev.atarim.xplevel;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +14,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
 
 
 public class SkillMenuCommand implements CommandExecutor {
@@ -52,9 +50,16 @@ public class SkillMenuCommand implements CommandExecutor {
             ItemMeta exitMeta = exit.getItemMeta();
 
             // health skill appearance
-            healthMeta.setDisplayName(ChatColor.GOLD + "Health " + romanSkillLevel("healthLevel", playerName));
+            healthMeta.setDisplayName(ChatColor.DARK_RED+ "❤ " + ChatColor.RED + "Health " + ChatColor.WHITE + romanSkillLevel("healthLevel", playerName));
             ArrayList<String> healthLore = new ArrayList<>();
-            healthLore.add(ChatColor.BLUE + "Increases your maximum health.");
+            int healthLevel = new LevelSQL().getValueSQL("healthLevel", playerName);
+            healthLore.add("");
+            healthLore.add(ChatColor.WHITE + "Upgrade " + ChatColor.GREEN + healthLevel + "/20");
+            healthLore.add("");
+            healthLore.add(ChatColor.WHITE + "Current Health: " + ChatColor.GREEN + (20 + healthLevel));
+            healthLore.add(ChatColor.WHITE + "" + ChatColor.ITALIC + "Upgrades Health by half a heart." + ChatColor.RESET);
+            healthLore.add("");
+            healthLore.add(ChatColor.GREEN + "Click to upgrade!" + ChatColor.RESET);
             healthMeta.setLore(healthLore);
             health.setItemMeta(healthMeta);
 

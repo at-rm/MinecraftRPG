@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public final class XPLevel extends JavaPlugin {
 
     private Connection connection;
-    public String host, database, username, password, table;
+    public String host, database, username, password, tablePlayers, tableReviews;
     public int port;
 
     @Override
@@ -23,6 +23,7 @@ public final class XPLevel extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new LevelSQL(), this);
         getCommand("skills").setExecutor(new SkillMenuCommand());
         getServer().getPluginManager().registerEvents(new SkillAction(), this);
+        getCommand("review").setExecutor(new ReviewSystem());
     }
 
     /**
@@ -37,7 +38,7 @@ public final class XPLevel extends JavaPlugin {
         database = this.getConfig().getString("database");
         username = this.getConfig().getString("username");
         password = this.getConfig().getString("password");
-        table = this.getConfig().getString("table");
+        tablePlayers = this.getConfig().getString("tablePlayers");
     }
 
     @Override
@@ -46,14 +47,6 @@ public final class XPLevel extends JavaPlugin {
     }
 
     public void mysqlSetup(){
-        /*
-        host = "localhost";
-        port = 3306;
-        database = "test";
-        username = "root";
-        password = "password";
-        table = "players";
-         */
 
         try{
 

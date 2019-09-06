@@ -60,9 +60,9 @@ public class LevelSQL implements Listener {
         // Need Player's current level to get their nickname.
         int level = getValueSQL("level", player.getUniqueId().toString());
         // Set their nickname
-        String levelString = ChatColor.GRAY + "[" + ChatColor.YELLOW + "⌁" + getLevelColor(level) + level
-                + ChatColor.YELLOW + "⌁" + ChatColor.GRAY + "]";
-        player.setDisplayName(levelString + " " + player.getName());
+        String levelString = ChatColor.DARK_GRAY + "[" + getLevelColor(level) + "✶" + ChatColor.BOLD + level
+                +  ChatColor.RESET + getLevelColor(level) + "✶"  +  ChatColor.DARK_GRAY + "] " + ChatColor.WHITE + player.getName();
+        player.setDisplayName(levelString);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -114,13 +114,13 @@ public class LevelSQL implements Listener {
     private void createPlayer(UUID uuid) {
         try {
             PreparedStatement statement = plugin.getConnection()
-                    .prepareStatement("SELECT * FROM " + plugin.table + " WHERE UUID=?");
+                    .prepareStatement("SELECT * FROM " + plugin.tablePlayers + " WHERE UUID=?");
             statement.setString(1, uuid.toString());
             ResultSet results = statement.executeQuery();
             results.next();
             if (!playerExists(uuid)) {
                 PreparedStatement insert = plugin.getConnection()
-                        .prepareStatement("INSERT INTO " + plugin.table
+                        .prepareStatement("INSERT INTO " + plugin.tablePlayers
                                 + " (uuid, level, xp, skillPoints, healthLevel, strengthLevel, speedLevel, enduranceLevel, intelligenceLevel) " +
                                 "VALUES (?,?,?,?,?,?,?,?,?)");
                 insert.setString(1, uuid.toString());
@@ -147,7 +147,7 @@ public class LevelSQL implements Listener {
     private boolean playerExists(UUID uuid) {
         try {
             PreparedStatement statement = plugin.getConnection()
-                    .prepareStatement("SELECT * FROM " + plugin.table + " WHERE UUID=?");
+                    .prepareStatement("SELECT * FROM " + plugin.tablePlayers + " WHERE UUID=?");
             statement.setString(1, uuid.toString());
 
             ResultSet results = statement.executeQuery();
@@ -198,6 +198,10 @@ public class LevelSQL implements Listener {
                     ChatColor.YELLOW + "Level Up! " + ChatColor.RED + ChatColor.BOLD + level,
                     ChatColor.GREEN + Integer.toString(levelUpCounter) + " " + ChatColor.GRAY + "New Skill Point(s) Available. "
                             + ChatColor.WHITE + "/skills" );
+
+            String levelString = ChatColor.DARK_GRAY + "[" + getLevelColor(level) + "✶" + ChatColor.BOLD + level
+                    +  ChatColor.RESET + getLevelColor(level) + "✶"  +  ChatColor.DARK_GRAY + "] " + ChatColor.WHITE + player.getName();
+            player.setDisplayName(levelString);
         }
 
         // newLevelBar(player);
@@ -265,39 +269,61 @@ public class LevelSQL implements Listener {
         switch (skill) {
             case "health":
                 int healthLevel = getValueSQL("healthLevel", playersName);
+                if (healthLevel >= 20) {
+                    player.sendMessage(ChatColor.RED + "Your health is already maxed out!");
+                    break;
+                }
                 updateValueSQL("healthLevel", healthLevel + 1, playersName);
                 player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20 + 1 + healthLevel);
                 player.sendMessage(ChatColor.DARK_AQUA + "Your health has increased!");
                 break;
             case "strength":
                 int strengthLevel = getValueSQL("strengthLevel", playersName);
+                if (strengthLevel >= 20) {
+                    player.sendMessage(ChatColor.RED + "Your strength is already maxed out!");
+                    break;
+                }
                 updateValueSQL("strengthLevel", strengthLevel + 1, playersName);
                 player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1 + (strengthLevel + 1) * 0.5);
                 player.sendMessage(ChatColor.DARK_AQUA + "Your strength has increased!");
+                updateValueSQL("skillPoints", availableSkillPoints - 1, playersName);
                 break;
             case "speed":
                 int speedLevel = getValueSQL("speedLevel", playersName);
+                if (speedLevel >= 20) {
+                    player.sendMessage(ChatColor.RED + "Your speed is already maxed out!");
+                    break;
+                }
                 updateValueSQL("speedLevel", speedLevel + 1, playersName);
                 player.sendMessage(ChatColor.DARK_AQUA + "Your speed has increased!");
                 player.setWalkSpeed(0.15f+ (speedLevel + 1) * 0.01f);
+                updateValueSQL("skillPoints", availableSkillPoints - 1, playersName);
                 break;
             case "endurance":
                 int enduranceLevel = getValueSQL("enduranceLevel", playersName);
+                if (enduranceLevel >= 20) {
+                    player.sendMessage(ChatColor.RED + "Your endurance is already maxed out!");
+                    break;
+                }
                 updateValueSQL("enduranceLevel", enduranceLevel + 1, playersName);
                 player.sendMessage(ChatColor.DARK_AQUA + "Your endurance has increased!");
                 // TODO what should endurance do? :c
+                updateValueSQL("skillPoints", availableSkillPoints - 1, playersName);
                 break;
             case "intelligence":
                 int intelligenceLevel = getValueSQL("intelligenceLevel", playersName);
+                if (intelligenceLevel >= 20) {
+                    player.sendMessage(ChatColor.RED + "Your intelligence is already maxed out!");
+                    break;
+                }
                 updateValueSQL("intelligenceLevel", intelligenceLevel + 1, playersName);
                 player.sendMessage(ChatColor.DARK_AQUA + "Your intelligence has increased!");
+                updateValueSQL("skillPoints", availableSkillPoints - 1, playersName);
                 break;
             default:
                 plugin.getServer().broadcastMessage("Uh-oh something went wrong.");
                 break;
         }
-        // used one skill point
-        updateValueSQL("skillPoints", availableSkillPoints - 1, playersName);
 
         // give them full health
         int playerHealth = 20 + getValueSQL("healthLevel", player.getUniqueId().toString());

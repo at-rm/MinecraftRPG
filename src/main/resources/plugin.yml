@@ -6,3 +6,5 @@ depend: [TitleAPI]
 commands:
   skills:
     description: Opens the Skill Menu
+  review:
+    description: Review a person
