@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="XPLevel:jar">
-    <output-path>$USER_HOME$/Desktop/spaget/plugins</output-path>
-    <root id="archive" name="XPLevel.jar">
-      <element id="module-output" name="XPLevel" />
-    </root>
-  </artifact>
-</component>
