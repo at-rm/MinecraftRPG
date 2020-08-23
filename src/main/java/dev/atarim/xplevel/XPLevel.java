@@ -23,7 +23,6 @@ public final class XPLevel extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new LevelSQL(), this);
         getCommand("skills").setExecutor(new SkillMenuCommand());
         getServer().getPluginManager().registerEvents(new SkillAction(), this);
-        getCommand("review").setExecutor(new ReviewSystem());
     }
 
     /**
