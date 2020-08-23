@@ -105,6 +105,7 @@ public class SkillMenuCommand implements CommandExecutor {
 
             // Construct GUI
             ItemStack[] menu = new ItemStack[27];
+            
             for (int i = 0; i < menu.length; i++) {
                  switch (i) {
                      case 11:
