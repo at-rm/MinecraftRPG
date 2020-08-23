@@ -112,6 +112,7 @@ public class LevelSQL implements Listener {
      * @param uuid  the player's uuid
      */
     private void createPlayer(UUID uuid) {
+        
         try {
             PreparedStatement statement = plugin.getConnection()
                     .prepareStatement("SELECT * FROM " + plugin.tablePlayers + " WHERE UUID=?");
@@ -145,6 +146,7 @@ public class LevelSQL implements Listener {
      * @return  if player exists
      */
     private boolean playerExists(UUID uuid) {
+        
         try {
             PreparedStatement statement = plugin.getConnection()
                     .prepareStatement("SELECT * FROM " + plugin.tablePlayers + " WHERE UUID=?");
